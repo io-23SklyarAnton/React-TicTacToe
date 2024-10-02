@@ -5,6 +5,7 @@ import {useState} from 'react';
 function Game() {
     const [history, setHistory] = useState([Array(9).fill(null)]);
     const [currentMove, setCurrentMove] = useState(0);
+    const [isHistoryAsc, setHistoryOrderAsc] = useState(true)
     const xIsNext = currentMove % 2 === 0;
     const currentSquares = history[currentMove];
 
@@ -16,6 +17,10 @@ function Game() {
 
     function jumpTo(nextMove: number) {
         setCurrentMove(nextMove);
+    }
+
+    function handleReverseHistory(){
+        setHistoryOrderAsc(!isHistoryAsc)
     }
 
     const moves = history.map((_, move) => {
@@ -44,7 +49,8 @@ function Game() {
                 <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay}/>
             </div>
             <div className="game-info">
-                <ol>{moves}</ol>
+                <ul>{ isHistoryAsc ? moves : [...moves].reverse()}</ul>
+                <button onClick={handleReverseHistory}>Reverse history</button>
             </div>
         </div>
     );
