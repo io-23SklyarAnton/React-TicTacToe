@@ -2,13 +2,14 @@ import './style.css';
 
 interface SquareProps {
     value: string
+    isWinner: boolean
     onSquareClick: () => void
 }
 
-function Square({value, onSquareClick}: SquareProps) {
+function Square({value, isWinner, onSquareClick}: SquareProps) {
 
     return (
-        <button className="square" onClick={onSquareClick}>
+        <button className={"squareBase " + (isWinner ? "winnerSquare" : "") } onClick={onSquareClick}>
             {value}
         </button>
     );
