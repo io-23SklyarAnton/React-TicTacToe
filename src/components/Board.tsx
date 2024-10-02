@@ -1,4 +1,3 @@
-import React, {useState} from 'react';
 import Square from './Square';
 import './style.css';
 
@@ -9,28 +8,22 @@ interface BoardProps {
 }
 
 function Board({xIsNext, squares, onPlay,}: BoardProps) {
-    const [winnerRow, setWinnerRow] = useState([] as Array<number>);
-    const winner = calculateWinner(squares);
+    let winner = calculateWinner(squares);
 
     let status;
-    if (winner) {
+    if (winner.length > 0) {
         status = `Winner: ${squares[winner[0]]}`;
     } else {
         status = `Next player: ${xIsNext ? "X" : "O"}`;
     }
 
     function handleClick(i: number) {
-        if (squares[i] || winner) {
+        if (squares[i] || winner.length > 0) {
             return;
         }
         const nextSquares = squares.slice();
         nextSquares[i] = xIsNext ? 'X' : 'O';
         onPlay(nextSquares);
-
-        const winningRow = calculateWinner(nextSquares);
-        if (winningRow) {
-            setWinnerRow(winningRow);
-        }
     }
 
     return (
@@ -44,7 +37,7 @@ function Board({xIsNext, squares, onPlay,}: BoardProps) {
                         rowIndex={index}
                         squares={squaresRow}
                         handleClick={handleClick}
-                        winnerRow={winnerRow}
+                        winnerRow={winner}
                     />
                 );
             })}
@@ -88,7 +81,7 @@ function calculateWinner(squares: Array<string>) {
             return [a, b, c];
         }
     }
-    return null;
+    return [];
 }
 
 export default Board;
