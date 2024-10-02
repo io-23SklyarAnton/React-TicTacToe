@@ -1,7 +1,7 @@
 import './style.css';
 
 interface SquareProps {
-    value: string
+    value: string | null
     isWinner: boolean
     onSquareClick: () => void
 }

@@ -1,10 +1,11 @@
 import Square from './Square';
 import './style.css';
+import {SquareChanged} from "./Game";
 
 interface BoardProps {
     xIsNext: boolean
-    squares: Array<string>
-    onPlay: (nextSquares: Array<string>) => void
+    squares: Array<string | null>
+    onPlay: (nextSquares: (string | null)[], squareChanged: SquareChanged) => void
 }
 
 function Board({xIsNext, squares, onPlay,}: BoardProps) {
@@ -22,8 +23,14 @@ function Board({xIsNext, squares, onPlay,}: BoardProps) {
             return;
         }
         const nextSquares = squares.slice();
-        nextSquares[i] = xIsNext ? 'X' : 'O';
-        onPlay(nextSquares);
+        const changeSquare: SquareChanged = {
+            value: xIsNext ? 'X' : 'O',
+            row: Math.floor(i / 3),
+            col: i % 3
+        };
+
+        nextSquares[i] = changeSquare.value;
+        onPlay(nextSquares, changeSquare);
     }
 
     return (
@@ -47,7 +54,7 @@ function Board({xIsNext, squares, onPlay,}: BoardProps) {
 
 interface BoardRowProps {
     rowIndex: number
-    squares: Array<string>
+    squares: Array<string | null>
     handleClick: (i: number) => void
     winnerRow: Array<number>
 }
@@ -64,7 +71,7 @@ function BoardRow({rowIndex, squares, handleClick, winnerRow}: BoardRowProps) {
     );
 }
 
-function calculateWinner(squares: Array<string>) {
+function calculateWinner(squares: Array<string | null>) {
     const lines = [
         [0, 1, 2],
         [3, 4, 5],
