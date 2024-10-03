@@ -1,6 +1,7 @@
 import './style.css';
 import Board from './Board';
 import {useState} from 'react';
+import React from "react";
 
 export interface SquareChanged {
     value: string;
@@ -10,14 +11,14 @@ export interface SquareChanged {
 
 export interface HistoryItem {
     board: Array<string | null>;
-    changeSquare: SquareChanged | null;
+    changedSquare: SquareChanged | null;
 }
 
 function Game() {
     const [history, setHistory] = useState<HistoryItem[]>(
         [{
             board: Array(9).fill(null),
-            changeSquare: null
+            changedSquare: null
         }]
     );
     const [currentMove, setCurrentMove] = useState(0);
@@ -28,7 +29,7 @@ function Game() {
     function handlePlay(nextSquares: Array<string | null>, changeSquare: SquareChanged) {
         const newMove: HistoryItem = {
             board: nextSquares,
-            changeSquare: changeSquare
+            changedSquare: changeSquare
         };
         const nextHistory = [...history.slice(0, currentMove + 1), newMove];
         setHistory(nextHistory);
@@ -46,10 +47,10 @@ function Game() {
     const moves = history.map((historyItem, move) => {
         let changedSquareInfo: string = '';
 
-        if (historyItem.changeSquare) {
-            const changedSquareValue = historyItem.changeSquare.value;
-            const changedSquareRow = historyItem.changeSquare.row;
-            const changedSquareCol = historyItem.changeSquare.col;
+        if (historyItem.changedSquare) {
+            const changedSquareValue = historyItem.changedSquare.value;
+            const changedSquareRow = historyItem.changedSquare.row;
+            const changedSquareCol = historyItem.changedSquare.col;
 
             changedSquareInfo = `${changedSquareValue} at (row: ${changedSquareRow + 1}, column: ${changedSquareCol + 1})`;
         }

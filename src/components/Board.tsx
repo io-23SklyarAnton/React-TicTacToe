@@ -1,6 +1,7 @@
 import Square from './Square';
 import './style.css';
 import {SquareChanged} from "./Game";
+import React from "react";
 
 interface BoardProps {
     xIsNext: boolean

@@ -7,11 +7,9 @@ import Game from "./components/Game";
 function App() {
     return (
         <>
-            <header>
-                <Header />
-            </header>
+            <Header/>
             <div className="game">
-                <Game />
+                <Game/>
             </div>
         </>
     )
