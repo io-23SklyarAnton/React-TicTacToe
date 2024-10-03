@@ -1,8 +1,9 @@
 import Style from './style.module.css';
 import Board from './Board';
-import {useMemo, useState} from 'react';
+import {useState} from 'react';
 import React from "react";
 import MySelect from "./UI/MySelect";
+import HistoryList from "./HistoryList";
 
 export interface SquareChanged {
     value: string;
@@ -27,47 +28,6 @@ function Game() {
     const xIsNext = currentMove % 2 === 0;
     const currentSquares = history[currentMove].board;
     const [selectedHistorySort, setSelectedHistorySort] = useState("asc");
-
-    const moves = history.map((historyItem, move) => {
-        let changedSquareInfo: string = '';
-
-        if (historyItem.changedSquare) {
-            const changedSquareValue = historyItem.changedSquare.value;
-            const changedSquareRow = historyItem.changedSquare.row;
-            const changedSquareCol = historyItem.changedSquare.col;
-
-            changedSquareInfo = `${changedSquareValue} at (row: ${changedSquareRow + 1}, column: ${changedSquareCol + 1})`;
-        }
-
-        let description;
-        if (move === 0) {
-            description = 'Go to game start';
-        } else if (move === currentMove) {
-            return (
-                <li key={move}>
-                    <p>
-                        {"You are at move #"}{currentMove}. {changedSquareInfo}
-                    </p>
-                </li>
-            );
-        } else {
-            description = 'Go to move #' + move;
-        }
-        return (
-            <li key={move} className={Style.historyListElement}>
-                <button onClick={() => jumpTo(move)}>{description}. {changedSquareInfo}</button>
-            </li>
-        );
-    });
-
-    const sortedHistory = useMemo(() => {
-            console.log("sortedHistory");
-            if (isHistoryAsc) {
-                return moves;
-            }
-            return [...moves].reverse();
-        },
-        [moves, isHistoryAsc]);
 
     function handlePlay(nextSquares: Array<string | null>, changeSquare: SquareChanged) {
         const newMove: HistoryItem = {
@@ -105,7 +65,7 @@ function Game() {
                     onChange={handleHistorySortChange}
                 />
 
-                <ul>{sortedHistory}</ul>
+                <HistoryList history={history} currentMove={currentMove} jumpTo={jumpTo} isHistoryAsc={isHistoryAsc}/>
             </div>
         </div>
     );
