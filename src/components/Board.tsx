@@ -1,5 +1,5 @@
 import Square from './Square';
-import './style.css';
+import Style from './style.module.css';
 import {SquareChanged} from "./Game";
 import React from "react";
 
@@ -36,7 +36,7 @@ function Board({xIsNext, squares, onPlay,}: BoardProps) {
 
     return (
         <div>
-            <div className="status">{status}</div>
+            <div className={Style.status}>{status}</div>
             {[0, 1, 2].map((index) => {
                 const squaresRow = squares.slice(index * 3, index * 3 + 3);
                 return (
@@ -62,7 +62,7 @@ interface BoardRowProps {
 
 function BoardRow({rowIndex, squares, handleClick, winnerRow}: BoardRowProps) {
     return (
-        <div className="board-row">
+        <div className={Style.boardRow}>
             {squares.map((square, index) => {
                 const squareIndex = 3 * rowIndex + index
                 return <Square isWinner={winnerRow.includes(squareIndex)} key={squareIndex} value={square}

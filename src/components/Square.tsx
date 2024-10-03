@@ -1,4 +1,4 @@
-import './style.css';
+import Style from "./style.module.css";
 import React from "react";
 
 interface SquareProps {
@@ -10,7 +10,7 @@ interface SquareProps {
 function Square({value, isWinner, onSquareClick}: SquareProps) {
 
     return (
-        <button className={"squareBase " + (isWinner ? "winnerSquare" : "") } onClick={onSquareClick}>
+        <button className={Style.squareBase + (isWinner ? " "+ Style.winnerSquare : "") } onClick={onSquareClick}>
             {value}
         </button>
     );

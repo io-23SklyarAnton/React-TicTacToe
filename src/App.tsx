@@ -1,14 +1,14 @@
 import React from 'react';
-import './App.css';
 import Header from './components/Header';
 import Game from "./components/Game";
+import Style from './components/style.module.css';
 
 
 function App() {
     return (
         <>
             <Header/>
-            <div className="game">
+            <div className={Style.game}>
                 <Game/>
             </div>
         </>

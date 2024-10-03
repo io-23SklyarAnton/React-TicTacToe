@@ -1,4 +1,4 @@
-import './style.css';
+import Style from './style.module.css';
 import Board from './Board';
 import {useState} from 'react';
 import React from "react";
@@ -70,18 +70,18 @@ function Game() {
             description = 'Go to move #' + move;
         }
         return (
-            <li key={move} className={"historyListElement"}>
+            <li key={move} className={Style.historyListElement}>
                 <button onClick={() => jumpTo(move)}>{description}. {changedSquareInfo}</button>
             </li>
         );
     });
 
     return (
-        <div className="game">
-            <div className="game-board">
+        <div className={Style.game}>
+            <div className={Style.gameBoard}>
                 <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay}/>
             </div>
-            <div className="game-info">
+            <div className={Style.gameInfo}>
                 <ul>{isHistoryAsc ? moves : [...moves].reverse()}</ul>
                 <button onClick={handleReverseHistory}>Reverse history</button>
             </div>
