@@ -27,6 +27,7 @@
 }
 
 .historyListElement {
+    display: flex;
     margin: 30px 0;
 }
 
@@ -46,7 +47,10 @@
 }
 
 .gameInfo {
-    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    margin: 43px;
+
 }
 
 * {

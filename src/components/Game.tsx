@@ -2,6 +2,7 @@ import Style from './style.module.css';
 import Board from './Board';
 import {useState} from 'react';
 import React from "react";
+import MySelect from "./UI/MySelect";
 
 export interface SquareChanged {
     value: string;
@@ -25,6 +26,7 @@ function Game() {
     const [isHistoryAsc, setHistoryOrderAsc] = useState(true)
     const xIsNext = currentMove % 2 === 0;
     const currentSquares = history[currentMove].board;
+    const [selectedHistorySort, setSelectedHistorySort] = useState("asc");
 
     function handlePlay(nextSquares: Array<string | null>, changeSquare: SquareChanged) {
         const newMove: HistoryItem = {
@@ -40,8 +42,10 @@ function Game() {
         setCurrentMove(nextMove);
     }
 
-    function handleReverseHistory() {
-        setHistoryOrderAsc(!isHistoryAsc)
+    function handleHistorySortChange(event: React.ChangeEvent<HTMLSelectElement>) {
+        const value = event.target.value;
+        setSelectedHistorySort(value);
+        setHistoryOrderAsc(value === "asc");
     }
 
     const moves = history.map((historyItem, move) => {
@@ -82,8 +86,17 @@ function Game() {
                 <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay}/>
             </div>
             <div className={Style.gameInfo}>
+                <MySelect
+                    defaultValue={"Select Ordering"}
+                    options={[
+                        {value: "asc", label: "Ascending"},
+                        {value: "desc", label: "Descending"}
+                    ]}
+                    value={selectedHistorySort}
+                    onChange={handleHistorySortChange}
+                />
+
                 <ul>{isHistoryAsc ? moves : [...moves].reverse()}</ul>
-                <button onClick={handleReverseHistory}>Reverse history</button>
             </div>
         </div>
     );
