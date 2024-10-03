@@ -1,6 +1,6 @@
 import Style from './style.module.css';
 import Board from './Board';
-import {useState} from 'react';
+import {useMemo, useState} from 'react';
 import React from "react";
 import MySelect from "./UI/MySelect";
 
@@ -27,26 +27,6 @@ function Game() {
     const xIsNext = currentMove % 2 === 0;
     const currentSquares = history[currentMove].board;
     const [selectedHistorySort, setSelectedHistorySort] = useState("asc");
-
-    function handlePlay(nextSquares: Array<string | null>, changeSquare: SquareChanged) {
-        const newMove: HistoryItem = {
-            board: nextSquares,
-            changedSquare: changeSquare
-        };
-        const nextHistory = [...history.slice(0, currentMove + 1), newMove];
-        setHistory(nextHistory);
-        setCurrentMove(nextHistory.length - 1);
-    }
-
-    function jumpTo(nextMove: number) {
-        setCurrentMove(nextMove);
-    }
-
-    function handleHistorySortChange(event: React.ChangeEvent<HTMLSelectElement>) {
-        const value = event.target.value;
-        setSelectedHistorySort(value);
-        setHistoryOrderAsc(value === "asc");
-    }
 
     const moves = history.map((historyItem, move) => {
         let changedSquareInfo: string = '';
@@ -80,6 +60,35 @@ function Game() {
         );
     });
 
+    const sortedHistory = useMemo(() => {
+            console.log("sortedHistory");
+            if (isHistoryAsc) {
+                return moves;
+            }
+            return [...moves].reverse();
+        },
+        [moves, isHistoryAsc]);
+
+    function handlePlay(nextSquares: Array<string | null>, changeSquare: SquareChanged) {
+        const newMove: HistoryItem = {
+            board: nextSquares,
+            changedSquare: changeSquare
+        };
+        const nextHistory = [...history.slice(0, currentMove + 1), newMove];
+        setHistory(nextHistory);
+        setCurrentMove(nextHistory.length - 1);
+    }
+
+    function jumpTo(nextMove: number) {
+        setCurrentMove(nextMove);
+    }
+
+    function handleHistorySortChange(event: React.ChangeEvent<HTMLSelectElement>) {
+        const value = event.target.value;
+        setSelectedHistorySort(value);
+        setHistoryOrderAsc(value === "asc");
+    }
+
     return (
         <div className={Style.game}>
             <div className={Style.gameBoard}>
@@ -96,7 +105,7 @@ function Game() {
                     onChange={handleHistorySortChange}
                 />
 
-                <ul>{isHistoryAsc ? moves : [...moves].reverse()}</ul>
+                <ul>{sortedHistory}</ul>
             </div>
         </div>
     );
