@@ -4,11 +4,11 @@ import Style from "./style.module.css";
 interface HistoryListProps {
     history: Array<{ changedSquare: { value: string, row: number, col: number } | null }>
     currentMove: number
-    jumpTo: (move: number) => void
+    setCurrentMove: (move: number) => void
     isHistoryAsc: boolean
 }
 
-const HistoryList = ({history, currentMove, jumpTo, isHistoryAsc}: HistoryListProps) => {
+const HistoryList = ({history, currentMove, setCurrentMove, isHistoryAsc}: HistoryListProps) => {
     const moves = history.map((historyItem, move) => {
         let changedSquareInfo: string = '';
 
@@ -24,10 +24,11 @@ const HistoryList = ({history, currentMove, jumpTo, isHistoryAsc}: HistoryListPr
         if (move === 0) {
             description = 'Go to game start';
         } else if (move === currentMove) {
+            description = 'You are at move #';
             return (
                 <li key={move}>
                     <p>
-                        {"You are at move #"}{currentMove}. {changedSquareInfo}
+                        {description}{currentMove}. {changedSquareInfo}
                     </p>
                 </li>
             );
@@ -36,7 +37,7 @@ const HistoryList = ({history, currentMove, jumpTo, isHistoryAsc}: HistoryListPr
         }
         return (
             <li key={move} className={Style.historyListElement}>
-                <button onClick={() => jumpTo(move)}>{description}. {changedSquareInfo}</button>
+                <button onClick={() => setCurrentMove(move)}>{description}. {changedSquareInfo}</button>
             </li>
         );
     });

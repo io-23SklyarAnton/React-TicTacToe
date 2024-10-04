@@ -39,10 +39,6 @@ function Game() {
         setCurrentMove(nextHistory.length - 1);
     }
 
-    function jumpTo(nextMove: number) {
-        setCurrentMove(nextMove);
-    }
-
     function handleHistorySortChange(event: React.ChangeEvent<HTMLSelectElement>) {
         const value = event.target.value;
         setSelectedHistorySort(value);
@@ -65,7 +61,7 @@ function Game() {
                     onChange={handleHistorySortChange}
                 />
 
-                <HistoryList history={history} currentMove={currentMove} jumpTo={jumpTo} isHistoryAsc={isHistoryAsc}/>
+                <HistoryList history={history} currentMove={currentMove} setCurrentMove={setCurrentMove} isHistoryAsc={isHistoryAsc}/>
             </div>
         </div>
     );
